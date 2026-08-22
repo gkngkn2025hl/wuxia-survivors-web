@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+		<link rel="preload" href="web-loading-v0.0.3-fast.png" as="image" type="image/png" fetchpriority="high">
 		<title>倖存者 Prototype｜WuxiaSurvivors</title>
 		<meta name="description" content="以武俠養成為核心、採 Survivors 形式戰鬥的早期 Prototype。">
 		<meta property="og:type" content="website">
@@ -114,7 +115,7 @@ body {
 		</noscript>
 
 		<div id="status">
-			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="web-loading-v0.0.3.png" alt="倖存者 Prototype 載入中">
+			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="web-loading-v0.0.3-fast.png" fetchpriority="high" decoding="sync" alt="倖存者 Prototype 載入中">
 			<progress id="status-progress"></progress>
 			<div id="status-notice"></div>
 		</div>
