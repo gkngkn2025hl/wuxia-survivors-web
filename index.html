@@ -128,6 +128,7 @@ const engine = new Engine(GODOT_CONFIG);
 
 (function () {
 	const statusOverlay = document.getElementById('status');
+	const statusSplash = document.getElementById('status-splash');
 	const statusProgress = document.getElementById('status-progress');
 	const statusNotice = document.getElementById('status-notice');
 
@@ -210,7 +211,15 @@ const engine = new Engine(GODOT_CONFIG);
 		}
 	} else {
 		setStatusMode('progress');
-		engine.startGame({
+		const splashReady = statusSplash.complete
+			? Promise.resolve()
+			: new Promise((resolve) => {
+				statusSplash.addEventListener('load', resolve, { once: true });
+				statusSplash.addEventListener('error', resolve, { once: true });
+				setTimeout(resolve, 4000);
+			});
+		const minimumSplashTime = new Promise((resolve) => setTimeout(resolve, 900));
+		const gameReady = engine.startGame({
 			'onProgress': function (current, total) {
 				if (current > 0 && total > 0) {
 					statusProgress.value = current;
@@ -220,7 +229,8 @@ const engine = new Engine(GODOT_CONFIG);
 					statusProgress.removeAttribute('max');
 				}
 			},
-		}).then(() => {
+		});
+		Promise.all([gameReady, splashReady, minimumSplashTime]).then(() => {
 			setStatusMode('hidden');
 		}, displayFailureNotice);
 	}
