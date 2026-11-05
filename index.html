@@ -10,8 +10,8 @@
 		<meta property="og:title" content="WuxiaSurvivors">
 		<meta property="og:description" content="Your Jianghu, your story.">
 		<meta property="og:url" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/">
-		<meta property="og:image" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/social-share-20260902-054609.jpg">
-		<meta property="og:image:secure_url" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/social-share-20260902-054609.jpg">
+		<meta property="og:image" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/social-share-20261105-003153.jpg">
+		<meta property="og:image:secure_url" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/social-share-20261105-003153.jpg">
 		<meta property="og:image:type" content="image/jpeg">
 		<meta property="og:image:width" content="1200">
 		<meta property="og:image:height" content="630">
@@ -19,8 +19,8 @@
 		<meta name="twitter:card" content="summary_large_image">
 		<meta name="twitter:title" content="WuxiaSurvivors">
 		<meta name="twitter:description" content="Your Jianghu, your story.">
-		<meta name="twitter:image" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/social-share-20260902-054609.jpg">
-		<link rel="preload" href="web-loading-v0.2.0-fast.png" as="image" type="image/png" fetchpriority="high">
+		<meta name="twitter:image" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/social-share-20261105-003153.jpg">
+		<link rel="preload" href="web-loading-v0.2.1-fast.png" as="image" type="image/png" fetchpriority="high">
 		<style>
 html, body, #canvas {
 	margin: 0;
@@ -121,16 +121,41 @@ body {
 		</noscript>
 
 		<div id="status">
-			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="web-loading-v0.2.0-fast.png" alt="">
+			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="web-loading-v0.2.1-fast.png" alt="">
 			<progress id="status-progress"></progress>
 			<div id="status-notice"></div>
 		</div>
 
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":56590092,"index.wasm":39513091},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":114495416,"index.wasm":39513091},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
+/* GitHub Pages transport only: reconstruct the unchanged Godot pack before startup. */
+function installSplitPackLoader(engine, manifest) {
+    const preloadFile = engine.preloadFile.bind(engine);
+    engine.preloadFile = async function (file, path) {
+        if (file !== 'index.pck') return preloadFile(file, path);
+        const pack = new Uint8Array(manifest.size);
+        let offset = 0;
+        for (const part of manifest.parts) {
+            const response = await fetch(part.file);
+            if (!response.ok) throw new Error(`Game download failed (${response.status}): ${part.file}`);
+            const bytes = new Uint8Array(await response.arrayBuffer());
+            if (bytes.length !== part.size) throw new Error(`Incomplete game download: ${part.file}`);
+            const digest = await crypto.subtle.digest('SHA-256', bytes);
+            const hash = Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, '0')).join('');
+            if (hash !== part.sha256) throw new Error(`Game download checksum mismatch: ${part.file}`);
+            pack.set(bytes, offset);
+            offset += bytes.length;
+            if (engine.config.onProgress) engine.config.onProgress(offset, manifest.size);
+        }
+        if (offset !== pack.length) throw new Error('Incomplete game package');
+        return preloadFile(pack.buffer, path || 'index.pck');
+    };
+}
+
+installSplitPackLoader(engine, {"size":114495416,"parts":[{"file":"game-20261105-003153-0.bin","size":50331648,"sha256":"8d7e8945be77f4da3e0f33087b34c553ea933c5b77941ec61d8bbb1d64678380"},{"file":"game-20261105-003153-1.bin","size":50331648,"sha256":"7fce7d8e01de0a8975244e09a5fcbcf5e0af7313cc100aaf418b23ee7bc2aa29"},{"file":"game-20261105-003153-2.bin","size":13832120,"sha256":"b48618db5bbe749106ada456938e5fd136dde9fe4704e8a48706596c501a9a53"}]});
 
 (function () {
 	const statusOverlay = document.getElementById('status');
