@@ -10,8 +10,8 @@
 		<meta property="og:title" content="WuxiaSurvivors">
 		<meta property="og:description" content="Your Jianghu, your story.">
 		<meta property="og:url" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/">
-		<meta property="og:image" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/social-share-20261112-191756.jpg">
-		<meta property="og:image:secure_url" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/social-share-20261112-191756.jpg">
+		<meta property="og:image" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/social-share-20261122-160043.jpg">
+		<meta property="og:image:secure_url" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/social-share-20261122-160043.jpg">
 		<meta property="og:image:type" content="image/jpeg">
 		<meta property="og:image:width" content="1200">
 		<meta property="og:image:height" content="630">
@@ -19,8 +19,8 @@
 		<meta name="twitter:card" content="summary_large_image">
 		<meta name="twitter:title" content="WuxiaSurvivors">
 		<meta name="twitter:description" content="Your Jianghu, your story.">
-		<meta name="twitter:image" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/social-share-20261112-191756.jpg">
-		<link rel="preload" href="web-loading-v0.2.3-fast.webp" as="image" type="image/webp" fetchpriority="high">
+		<meta name="twitter:image" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/social-share-20261122-160043.jpg">
+		<link rel="preload" href="web-loading-v0.2.4-fast.webp" as="image" type="image/webp" fetchpriority="high">
 		<style>
 html, body, #canvas {
 	margin: 0;
@@ -106,8 +106,94 @@ body {
 	text-align: center;
 	z-index: 1;
 }
-		#status { visibility: visible; }
-#status-progress { bottom: 7%; accent-color: #d9b66d; }
+		#landscape-notice { display: none; }
+@media (orientation: portrait) {
+    .handheld #canvas, .handheld #status { visibility: hidden !important; }
+    .handheld #landscape-notice {
+        position: fixed;
+        inset: 0;
+        z-index: 10;
+        display: grid;
+        place-items: center;
+        padding: 1.5rem;
+        background: #171512;
+        color: #f6ead2;
+        font: 1.125rem system-ui, sans-serif;
+        text-align: center;
+    }
+}
+body, #status { background-color: #191613; }
+#status {
+    visibility: visible;
+    --boot-bottom: max(7%, calc(env(safe-area-inset-bottom, 0px) + 18px));
+}
+#status-splash.fullsize--true {
+    width: min(23.5vw, 380px);
+    min-width: min(180px, 60vw);
+    height: auto;
+}
+#boot-hat {
+    position: absolute;
+    right: max(24px, calc(env(safe-area-inset-right, 0px) + 14px));
+    bottom: max(23px, calc(env(safe-area-inset-bottom, 0px) + 14px));
+    display: flex;
+    align-items: flex-end;
+    gap: 7px;
+    color: #e8dcc4;
+    text-shadow: 0 1px 5px #171512;
+    font: .95rem system-ui, sans-serif;
+    z-index: 2;
+    pointer-events: none;
+}
+#boot-hat[hidden] { display: none; }
+.boot-hat-mark { width: 51px; height: 44px; position: relative; }
+.boot-hat-mark img {
+    width: 51px;
+    height: 51px;
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    animation: boot-hat-hop 2.6s infinite ease-in-out;
+}
+.boot-ink-dust {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    left: 23px;
+    bottom: 2px;
+    border-radius: 50%;
+    background: #a59282;
+    box-shadow: -9px 2px #978673, 11px -2px #8c7b6c, -18px -3px #8c7b6c, 20px 2px #978673;
+    opacity: 0;
+    animation: boot-hat-dust 1.3s infinite ease-out;
+}
+@keyframes boot-hat-hop {
+    0% { transform: translateY(0) rotateY(0deg) rotateZ(0) scaleY(1); }
+    5% { transform: translateY(2px) rotateY(0deg) rotateZ(0) scaleY(.89); }
+    16.5% { transform: translateY(-27px) rotateY(90deg) rotateZ(-7deg) scaleY(1); }
+    28%, 50% { transform: translateY(0) rotateY(180deg) rotateZ(0) scaleY(1); }
+    55% { transform: translateY(2px) rotateY(180deg) rotateZ(0) scaleY(.89); }
+    66.5% { transform: translateY(-27px) rotateY(270deg) rotateZ(-7deg) scaleY(1); }
+    78%, 100% { transform: translateY(0) rotateY(360deg) rotateZ(0) scaleY(1); }
+}
+@keyframes boot-hat-dust {
+    0%, 54% { opacity: 0; transform: scale(.55); }
+    57% { opacity: .72; }
+    82%, 100% { opacity: 0; transform: translateY(-9px) scale(1.35); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .boot-hat-mark img, .boot-ink-dust { animation: none; }
+}
+#status-progress {
+    bottom: var(--boot-bottom);
+    width: min(42%, 560px);
+    height: 6px;
+    accent-color: #d9b66d;
+}
+#status-progress[value] { appearance: none; background: #393128; }
+#status-progress[value]::-webkit-progress-bar { background: #393128; }
+#status-progress::-webkit-progress-value { background: #d9b66d; }
+#status-progress::-moz-progress-bar { background: #d9b66d; }
 #boot-message, #boot-retry {
     position: absolute;
     z-index: 2;
@@ -115,11 +201,9 @@ body {
     text-align: center;
 }
 #boot-message {
-    bottom: 11%;
+    bottom: calc(var(--boot-bottom) + 15px);
     max-width: calc(100% - 2rem);
-    padding: .35rem .75rem;
-    border-radius: .35rem;
-    background: #171512e8;
+    margin: 0;
     color: #f6ead2;
 }
 #boot-retry {
@@ -147,22 +231,30 @@ body {
 		</noscript>
 
 		<div id="status">
-			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="web-loading-v0.2.3-fast.webp" alt="">
+			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="web-loading-v0.2.4-fast.webp" alt="">
 			<p id="boot-message" role="status">正在連線，準備下載遊戲…</p>
 			<progress id="status-progress" aria-label="遊戲下載進度"></progress>
 			<button id="boot-retry" type="button" hidden>重新載入</button>
+			<div id="boot-hat" aria-hidden="true"><span class="boot-hat-mark"><span class="boot-ink-dust"></span><img alt="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiB2aWV3Qm94PSIwIDAgMTI4IDEyOCI+PHBhdGggZD0iTTEwIDg0IFEzMSA2NSA2MCAyNyBRNjkgMjQgNzUgMzUgTDExOSA4NCBRODIgMTA1IDEwIDg0WiIgZmlsbD0iI2Q4YmQ4MyIgc3Ryb2tlPSIjNTk0YjM2IiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNNjAgMzBMMjcgODFNNjQgMzFMNDkgODdNNjggMzJMNzQgODhNNzQgMzhMOTggODZNMTggNzlRNjYgOTQgMTEzIDgxIiBmaWxsPSJub25lIiBzdHJva2U9IiM4YzczNGIiIHN0cm9rZS13aWR0aD0iMi42Ii8+PHBhdGggZD0iTTQ2IDk1UTYyIDExOCA4NCA5NCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNzk0ZTM4IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNNDcgODdMNjQgOTEiIHN0cm9rZT0iI2EyNTI0MSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PC9zdmc+"></span><span>載入中</span></div>
 			<div id="status-notice"></div>
 		</div>
 
-		<script>
+		<div id="landscape-notice" role="status">請將裝置轉為橫向遊玩</div>
+<script>
+const handheldWeb = navigator.userAgentData?.mobile ||
+    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+document.documentElement.classList.toggle('handheld', Boolean(handheldWeb));
 const bootMessage = document.getElementById('boot-message');
 const bootRetry = document.getElementById('boot-retry');
+const bootHat = document.getElementById('boot-hat');
 let bootTimer;
 bootRetry.addEventListener('click', () => window.location.reload());
 function setBootMessage(message) {
     clearTimeout(bootTimer);
     bootMessage.textContent = message;
     bootRetry.hidden = true;
+    bootHat.hidden = false;
     bootTimer = setTimeout(() => {
         bootMessage.textContent = '載入比預期久，可以繼續等候或重新載入。';
         bootRetry.hidden = false;
@@ -172,18 +264,66 @@ function bootFailed(message) {
     clearTimeout(bootTimer);
     bootMessage.textContent = message;
     bootRetry.hidden = false;
+    bootHat.hidden = true;
 }
 setBootMessage(bootMessage.textContent);
 		</script>
 		<script src="index.js" onerror="bootFailed('無法下載遊戲程式，請確認網路後重試。')"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":66558388,"index.wasm":39513091},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":107733312,"index.wasm":39513091},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 const GODOT_THREADS_ENABLED = false;
 if (typeof Engine !== 'function') {
     bootFailed('無法載入遊戲程式，請確認網路後重試。');
     throw new Error('Godot engine script unavailable.');
 }
 const engine = new Engine(GODOT_CONFIG);
+/* GitHub Pages transport only: reconstruct the unchanged Godot pack before startup. */
+function installSplitPackLoader(engine, manifest) {
+    const preloadFile = engine.preloadFile.bind(engine);
+    engine.preloadFile = async function (file, path) {
+        if (file !== 'index.pck') return preloadFile(file, path);
+        const pack = new Uint8Array(manifest.size);
+        const abort = new AbortController();
+        let loaded = 0, offset = 0;
+        const entries = manifest.parts.map(part => {
+            const entry = {part, offset};
+            offset += part.size;
+            return entry;
+        });
+        if (offset !== pack.length) throw new Error('Incomplete game package');
+        try {
+            await Promise.all(entries.map(async ({part, offset}) => {
+                const compressed = part.gzip && typeof DecompressionStream !== 'undefined';
+                const response = await fetch(compressed ? part.gzip : part.file, {signal: abort.signal});
+                if (!response.ok) throw new Error(`Game download failed (${response.status}): ${part.file}`);
+                const stream = compressed ? response.body.pipeThrough(new DecompressionStream('gzip')) : response.body;
+                const reader = stream.getReader();
+                let count = 0;
+                try {
+                    while (true) {
+                        const {done, value} = await reader.read();
+                        if (done) break;
+                        if (count + value.length > part.size) throw new Error(`Oversized game download: ${part.file}`);
+                        pack.set(value, offset + count);
+                        count += value.length;
+                        loaded += value.length;
+                        if (engine.config.onProgress) engine.config.onProgress(loaded, manifest.size);
+                    }
+                } finally { reader.releaseLock(); }
+                if (count !== part.size) throw new Error(`Incomplete game download: ${part.file}`);
+                const digest = await crypto.subtle.digest('SHA-256', pack.subarray(offset, offset + count));
+                const hash = Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, '0')).join('');
+                if (hash !== part.sha256) throw new Error(`Game download checksum mismatch: ${part.file}`);
+            }));
+        } catch (error) {
+            abort.abort();
+            throw error;
+        }
+        return preloadFile(pack.buffer, path || 'index.pck');
+    };
+}
+
+installSplitPackLoader(engine, {"size":107733312,"parts":[{"file":"game-20261122-160043-0.bin","size":50331648,"sha256":"671108f74342ecc12ea4483acf7204e2c1e76f11703c0cf18797918208896fd8"},{"file":"game-20261122-160043-1.bin","size":50331648,"sha256":"de4988e93b0a7ef4134de11d70ec7d6a28d4b3382b16e48cd7f2039c978f5576"},{"file":"game-20261122-160043-2.bin","size":7070016,"sha256":"ab4e1750f14c02883dfb28739fa0cceceedca2dd8eef455d056296580e4f78a9"}]});
 
 (function () {
 	const statusOverlay = document.getElementById('status');
@@ -290,6 +430,7 @@ const engine = new Engine(GODOT_CONFIG);
 			},
 		}).then(() => {
 			clearTimeout(bootTimer);
+			bootHat.hidden = true;
 			setStatusMode('hidden');
 		}, displayFailureNotice);
 	}
