@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, viewport-fit=cover">
 		<title>WuxiaSurvivors</title>
 		<meta name="description" content="Martial arts progression × survivor combat × Jianghu life.">
 		<meta property="og:type" content="website">
@@ -10,8 +10,8 @@
 		<meta property="og:title" content="WuxiaSurvivors">
 		<meta property="og:description" content="Your Jianghu, your story.">
 		<meta property="og:url" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/">
-		<meta property="og:image" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/social-share-20261122-160043-v2.jpg">
-		<meta property="og:image:secure_url" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/social-share-20261122-160043-v2.jpg">
+		<meta property="og:image" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/social-share-20261122-232412.jpg">
+		<meta property="og:image:secure_url" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/social-share-20261122-232412.jpg">
 		<meta property="og:image:type" content="image/jpeg">
 		<meta property="og:image:width" content="1200">
 		<meta property="og:image:height" content="630">
@@ -19,7 +19,7 @@
 		<meta name="twitter:card" content="summary_large_image">
 		<meta name="twitter:title" content="WuxiaSurvivors">
 		<meta name="twitter:description" content="Your Jianghu, your story.">
-		<meta name="twitter:image" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/social-share-20261122-160043-v2.jpg">
+		<meta name="twitter:image" content="https://gkngkn2025hl.github.io/wuxia-survivors-web/social-share-20261122-232412.jpg">
 		<link rel="preload" href="web-loading-v0.2.4-fast.webp" as="image" type="image/webp" fetchpriority="high">
 		<style>
 html, body, #canvas {
@@ -107,6 +107,12 @@ body {
 	z-index: 1;
 }
 		#landscape-notice { display: none; }
+:root {
+    --game-safe-left: env(safe-area-inset-left, 0px);
+    --game-safe-top: env(safe-area-inset-top, 0px);
+    --game-safe-right: env(safe-area-inset-right, 0px);
+    --game-safe-bottom: env(safe-area-inset-bottom, 0px);
+}
 @media (orientation: portrait) {
     .handheld #canvas, .handheld #status { visibility: hidden !important; }
     .handheld #landscape-notice {
@@ -245,6 +251,14 @@ const handheldWeb = navigator.userAgentData?.mobile ||
     /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 document.documentElement.classList.toggle('handheld', Boolean(handheldWeb));
+function readGameSafeInsets() {
+    const root = document.documentElement;
+    const style = getComputedStyle(root);
+    root.dataset.safeInsets = ['left', 'top', 'right', 'bottom']
+        .map(side => parseFloat(style.getPropertyValue('--game-safe-' + side)) || 0).join(',');
+}
+window.addEventListener('resize', readGameSafeInsets);
+readGameSafeInsets();
 const bootMessage = document.getElementById('boot-message');
 const bootRetry = document.getElementById('boot-retry');
 const bootHat = document.getElementById('boot-hat');
@@ -270,7 +284,7 @@ setBootMessage(bootMessage.textContent);
 		</script>
 		<script src="index.js" onerror="bootFailed('無法下載遊戲程式，請確認網路後重試。')"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":107733312,"index.wasm":39513091},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":110407032,"index.wasm":39513091},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 const GODOT_THREADS_ENABLED = false;
 if (typeof Engine !== 'function') {
     bootFailed('無法載入遊戲程式，請確認網路後重試。');
@@ -323,7 +337,7 @@ function installSplitPackLoader(engine, manifest) {
     };
 }
 
-installSplitPackLoader(engine, {"size":107733312,"parts":[{"file":"game-20261122-160043-0.bin","size":50331648,"sha256":"671108f74342ecc12ea4483acf7204e2c1e76f11703c0cf18797918208896fd8"},{"file":"game-20261122-160043-1.bin","size":50331648,"sha256":"de4988e93b0a7ef4134de11d70ec7d6a28d4b3382b16e48cd7f2039c978f5576"},{"file":"game-20261122-160043-2.bin","size":7070016,"sha256":"ab4e1750f14c02883dfb28739fa0cceceedca2dd8eef455d056296580e4f78a9"}]});
+installSplitPackLoader(engine, {"size":110407032,"parts":[{"file":"game-20261122-232412-0.bin","size":50331648,"sha256":"fd3383ec13dfd0b2e3132f39ab00a87953b0385e449a5ed45dca8643a9f4f6ae"},{"file":"game-20261122-232412-1.bin","size":50331648,"sha256":"f1faa15677a71d96284211c5b947425f93e34a2697e71ffbf8ce233935319dd2"},{"file":"game-20261122-232412-2.bin","size":9743736,"sha256":"6e4227efa93d3d2e521b1438128b72e99e455035a4204180fee6be0a698facf6"}]});
 
 (function () {
 	const statusOverlay = document.getElementById('status');
